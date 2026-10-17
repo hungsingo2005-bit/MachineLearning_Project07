@@ -1,850 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Project 07 — Bank Marketing AI</title>
-
-    <link
-        rel="stylesheet"
-        href="{{ url_for('static', filename='style.css') }}"
-    >
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7ece5">
+  <title>Project 07 | Dự đoán khách hàng gửi tiền</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Project 07 trang chủ"><span class="brand-mark">07</span><span>Bank<span class="brand-accent">Insight</span></span></a>
+    <nav class="nav-links" aria-label="Điều hướng chính">
+      <a href="#overview">Tổng quan</a><a href="#evaluation">Đánh giá mô hình</a><a href="#experiments">Biểu đồ</a><a href="#prediction">Dự đoán</a>
+    </nav>
+    <a class="nav-button" href="#prediction">Thử dự đoán <span aria-hidden="true">↗</span></a>
+  </header>
 
-<!-- =========================
-     BACKGROUND EFFECTS
-========================= -->
-
-<div class="ambient ambient-blue"></div>
-<div class="ambient ambient-purple"></div>
-<div class="grid-background"></div>
-
-
-<!-- =========================
-     NAVBAR
-========================= -->
-
-<header class="navbar">
-
-    <div class="nav-inner">
-
-        <a href="#" class="logo">
-            <span class="logo-mark">07</span>
-            <span>Bank<span class="logo-accent">AI</span></span>
-        </a>
-
-        <nav class="nav-links">
-            <a href="#overview">Tổng quan</a>
-            <a href="#prediction">Dự đoán</a>
-            <a href="#evaluation">Đánh giá</a>
-            <a href="#about">Giới thiệu</a>
-        </nav>
-
-        <div class="nav-actions">
-
-            <button
-                class="theme-toggle"
-                id="theme-toggle"
-                aria-label="Chuyển chế độ sáng tối"
-            >
-                <span class="theme-icon">☼</span>
-            </button>
-
-            <a href="#prediction" class="nav-cta">
-                Bắt đầu ngay
-                <span>↗</span>
-            </a>
-
+  <main id="top">
+    <section class="hero page-wrap" id="overview">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="status-dot"></span> ĐỒ ÁN MACHINE LEARNING · PROJECT 07</div>
+        <h1>Hiểu khách hàng.<br><span class="accent-text">Dự đoán cơ hội.</span></h1>
+        <p class="hero-description">Hệ thống phân tích thông tin khách hàng ngân hàng và ước tính khả năng đăng ký tiền gửi có kỳ hạn, hỗ trợ ưu tiên hoạt động tiếp cận.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#prediction">Bắt đầu dự đoán <span>→</span></a><a class="button button-secondary" href="#evaluation">Xem hiệu suất</a></div>
+        <div class="hero-highlights">
+          <div><strong>{{ metrics.pr_auc }}</strong><span>PR-AUC trên Test</span></div>
+          <i></i><div><strong>{{ metrics.f1 }}</strong><span>F1 Score trên Test</span></div><i></i><div><strong>{{ threshold }}</strong><span>Ngưỡng dự đoán</span></div>
         </div>
-
-    </div>
-
-</header>
-
-
-<!-- =========================
-     HERO
-========================= -->
-
-<section class="hero" id="overview">
-
-    <div class="hero-content reveal">
-
-        <div class="eyebrow">
-            <span class="status-dot"></span>
-            MACHINE LEARNING · BANK MARKETING
+      </div>
+      <div class="hero-art" aria-label="Minh họa xác suất dự đoán">
+        <div class="decor decor-one"></div><div class="decor decor-two"></div>
+        <div class="preview-card">
+          <div class="preview-top"><span>PHÂN TÍCH KHÁCH HÀNG</span><span class="live-pill"><b></b> SẴN SÀNG</span></div>
+          <div class="preview-symbol"><div class="symbol-ring"><span>AI</span></div></div>
+          <div class="preview-title">Từ dữ liệu đến quyết định</div>
+          <p>Pipeline tiền xử lý và mô hình đã được đóng gói để dự đoán nhất quán.</p>
+          <div class="preview-steps"><span>Dữ liệu</span><b>→</b><span>Xử lý</span><b>→</b><span>Mô hình</span></div>
         </div>
+        <div class="floating-note"><span class="note-icon">✓</span><span><strong>Đánh giá độc lập</strong><small>Kết quả trên tập Test</small></span></div>
+      </div>
+    </section>
 
-        <h1>
-            Dự đoán
-            <span class="gradient-text">khách hàng tiềm năng</span>
-            bằng AI.
-        </h1>
-
-        <p class="hero-description">
-            Hệ thống Machine Learning phân tích thông tin khách hàng
-            và ước tính khả năng đăng ký tiền gửi có kỳ hạn.
-        </p>
-
-        <div class="hero-actions">
-
-            <a href="#prediction" class="primary-button">
-                Thử dự đoán
-                <span>→</span>
-            </a>
-
-            <a href="#evaluation" class="secondary-button">
-                Xem hiệu suất
-            </a>
-
-        </div>
-
-        <div class="hero-meta">
-
-            <div>
-                <strong>{{ evaluation.pr_auc }}</strong>
-                <span>PR-AUC</span>
-            </div>
-
-            <div class="meta-line"></div>
-
-            <div>
-                <strong>{{ evaluation.f1 }}</strong>
-                <span>F1 Score</span>
-            </div>
-
-            <div class="meta-line"></div>
-
-            <div>
-                <strong>{{ threshold }}</strong>
-                <span>Threshold</span>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="hero-visual reveal delay-2">
-
-        <div class="orb orb-one"></div>
-        <div class="orb orb-two"></div>
-
-        <div class="ai-card glass">
-
-            <div class="ai-card-header">
-                <span>AI Prediction</span>
-
-                <span class="live-badge">
-                    <span></span>
-                    LIVE
-                </span>
-            </div>
-
-            <div class="prediction-circle">
-
-                <div class="circle-inner">
-
-                    <span class="circle-label">
-                        Probability
-                    </span>
-
-                    <strong>72.4%</strong>
-
-                </div>
-
-            </div>
-
-            <div class="ai-result">
-                <span>Khả năng đăng ký</span>
-                <strong>CAO</strong>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     MARQUEE
-========================= -->
-
-<div class="marquee-wrapper">
-
-    <div class="marquee">
-
-        <span>LOGISTIC REGRESSION</span>
-        <i>✦</i>
-
-        <span>MACHINE LEARNING</span>
-        <i>✦</i>
-
-        <span>PR-AUC</span>
-        <i>✦</i>
-
-        <span>PREDICTIVE ANALYTICS</span>
-        <i>✦</i>
-
-        <span>BANK MARKETING</span>
-        <i>✦</i>
-
-        <span>LOGISTIC REGRESSION</span>
-        <i>✦</i>
-
-        <span>MACHINE LEARNING</span>
-        <i>✦</i>
-
-    </div>
-
-</div>
-
-
-<!-- =========================
-     BENTO FEATURES
-========================= -->
-
-<section class="section" id="about">
-
-    <div class="section-heading reveal">
-
-        <div>
-            <span class="section-number">01 / OVERVIEW</span>
-
-            <h2>
-                Một hệ thống.
-                <span class="gradient-text">Nhiều góc nhìn.</span>
-            </h2>
-        </div>
-
-        <p>
-            Kết hợp dữ liệu khách hàng, mô hình Machine Learning
-            và phân tích hiệu suất trong một hệ thống thống nhất.
-        </p>
-
-    </div>
-
-
-    <div class="bento-grid">
-
-        <article class="bento-card large glass reveal">
-
-            <div class="card-icon blue">
-                ◉
-            </div>
-
-            <span class="card-number">01</span>
-
-            <h3>Dự đoán xác suất</h3>
-
-            <p>
-                Mô hình trả về xác suất khách hàng có khả năng
-                đăng ký tiền gửi thay vì chỉ đưa ra kết quả có/không.
-            </p>
-
-            <div class="mini-chart">
-                <span style="height:35%"></span>
-                <span style="height:50%"></span>
-                <span style="height:42%"></span>
-                <span style="height:70%"></span>
-                <span style="height:60%"></span>
-                <span style="height:85%"></span>
-                <span style="height:72%"></span>
-                <span style="height:95%"></span>
-            </div>
-
+    <section class="section page-wrap" id="evaluation">
+      <div class="section-heading"><div><span class="section-kicker">01 / ĐÁNH GIÁ</span><h2>Hiệu suất mô hình</h2></div><p>Các chỉ số được lấy từ báo cáo đánh giá PER2 trên tập Test.</p></div>
+      <div class="model-strip"><span class="model-dot"></span><span><small>MÔ HÌNH ĐƯỢC CHỌN</small><strong>{{ selected_model }}</strong></span><span class="threshold-chip">Threshold {{ threshold }}</span></div>
+      <div class="metric-grid">
+        <article class="metric-card metric-featured"><span>PR-AUC</span><strong>{{ metrics.pr_auc }}</strong><small>Diện tích dưới đường Precision–Recall</small></article>
+        <article class="metric-card"><span>ACCURACY</span><strong>{{ metrics.accuracy }}</strong><small>Tỷ lệ dự đoán đúng tổng thể</small></article>
+        <article class="metric-card"><span>PRECISION</span><strong>{{ metrics.precision }}</strong><small>Trong nhóm dự đoán đăng ký, bao nhiêu đúng</small></article>
+        <article class="metric-card"><span>RECALL</span><strong>{{ metrics.recall }}</strong><small>Tỷ lệ khách đăng ký được phát hiện</small></article>
+        <article class="metric-card"><span>F1 SCORE</span><strong>{{ metrics.f1 }}</strong><small>Cân bằng giữa Precision và Recall</small></article>
+      </div>
+      <div class="evaluation-bottom">
+        <article class="info-card"><div class="card-heading"><div><span class="section-kicker">KẾT QUẢ PHÂN LOẠI</span><h3>Confusion Matrix</h3></div><span class="test-badge">TEST</span></div>
+          <div class="matrix-wrap"><div class="matrix-label"></div><div class="matrix-col-label">Dự đoán: Không</div><div class="matrix-col-label">Dự đoán: Có</div>
+            <div class="matrix-row-label">Thực tế: Không</div><div class="matrix-cell tn"><small>TN</small><strong>{{ confusion.get('TN', '—') }}</strong></div><div class="matrix-cell fp"><small>FP</small><strong>{{ confusion.get('FP', '—') }}</strong></div>
+            <div class="matrix-row-label">Thực tế: Có</div><div class="matrix-cell fn"><small>FN</small><strong>{{ confusion.get('FN', '—') }}</strong></div><div class="matrix-cell tp"><small>TP</small><strong>{{ confusion.get('TP', '—') }}</strong></div>
+          </div>
+          <p class="matrix-note">TN: dự đoán không và thực tế không · TP: dự đoán có và thực tế có. FP/FN là hai loại dự đoán sai.</p>
         </article>
+        <article class="info-card pipeline-card"><span class="section-kicker">QUY TRÌNH</span><h3>Đầu vào đến dự đoán</h3><p>Mô hình PER2 sử dụng pipeline đã lưu, bao gồm tiền xử lý và bộ phân loại, để giữ cách xử lý dữ liệu thống nhất khi triển khai.</p><div class="pipeline-list"><div><b>01</b><span><strong>Thông tin khách hàng</strong><small>15 đặc trưng đầu vào</small></span></div><div><b>02</b><span><strong>Tiền xử lý</strong><small>Điền thiếu, chuẩn hóa, mã hóa</small></span></div><div><b>03</b><span><strong>Xác suất và ngưỡng</strong><small>Ngưỡng được chọn trên Validation</small></span></div></div></article>
+      </div>
+    </section>
 
-
-        <article class="bento-card glass reveal delay-1">
-
-            <div class="card-icon purple">
-                ◇
+    <section class="section page-wrap charts-section" id="experiments">
+      <div class="section-heading"><div><span class="section-kicker">02 / BIỂU ĐỒ & THÍ NGHIỆM</span><h2>Nhìn sâu vào kết quả</h2></div><p>Các biểu đồ được đọc trực tiếp từ reports/figures do các script PER1/PER2 tạo ra. Khi tạo biểu đồ mới, tải lại trang để cập nhật.</p></div>
+      {% if figures %}
+        {% for group in ["Thí nghiệm mô hình", "Kết quả trên Test", "Khám phá dữ liệu (Train)"] %}
+          {% set group_figures = figures | selectattr('group', 'equalto', group) | list %}
+          {% if group_figures %}
+            <div class="chart-group">
+              <div class="chart-group-title"><span></span><h3>{{ group }}</h3><small>{{ group_figures|length }} biểu đồ</small></div>
+              <div class="chart-grid">
+                {% for figure in group_figures %}
+                  <article class="chart-card">
+                    <a class="chart-image-link" href="{{ url_for('report_figure', filename=figure.file) }}" target="_blank" rel="noopener" aria-label="Mở biểu đồ {{ figure.title }} kích thước đầy đủ">
+                      <img src="{{ url_for('report_figure', filename=figure.file) }}" alt="{{ figure.title }}" loading="lazy">
+                    </a>
+                    <div class="chart-card-copy"><span class="chart-file">{{ figure.file }}</span><h4>{{ figure.title }}</h4><p>{{ figure.description }}</p><a href="{{ url_for('report_figure', filename=figure.file) }}" target="_blank" rel="noopener">Mở ảnh kích thước đầy đủ ↗</a></div>
+                  </article>
+                {% endfor %}
+              </div>
             </div>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="charts-empty"><strong>Chưa tìm thấy biểu đồ.</strong><p>Hãy chạy các script EDA/PER2 để tạo ảnh trong <code>reports/figures/</code>, sau đó tải lại trang.</p><code>python src/PER2/plot_threshold_metrics.py</code></div>
+      {% endif %}
+    </section>
 
-            <span class="card-number">02</span>
-
-            <h3>Threshold</h3>
-
-            <div class="big-value">
-                {{ threshold }}
+    <section class="section page-wrap prediction-section" id="prediction">
+      <div class="section-heading"><div><span class="section-kicker">02 / DỰ ĐOÁN</span><h2>Phân tích khách hàng</h2></div><p>Điền thông tin bên dưới để nhận xác suất dự đoán từ mô hình đã huấn luyện.</p></div>
+      <div class="prediction-layout">
+        <section class="form-card">
+          <div class="card-heading"><div><span class="section-kicker">HỒ SƠ KHÁCH HÀNG</span><h3>Thông tin đầu vào</h3></div><span class="field-count">15 TRƯỜNG</span></div>
+          <form id="prediction-form">
+            <div class="form-grid">
+              <div class="form-group"><label for="age">Tuổi</label><input id="age" name="age" type="number" value="35" min="18" max="100" step="1" required></div>
+              <div class="form-group"><label for="job">Nghề nghiệp</label><select id="job" name="job"><option>admin.</option><option>blue-collar</option><option>entrepreneur</option><option>housemaid</option><option>management</option><option>retired</option><option>self-employed</option><option>services</option><option>student</option><option selected>technician</option><option>unemployed</option><option>unknown</option></select></div>
+              <div class="form-group"><label for="marital">Tình trạng hôn nhân</label><select id="marital"><option>divorced</option><option selected>married</option><option>single</option></select></div>
+              <div class="form-group"><label for="education">Trình độ học vấn</label><select id="education"><option>primary</option><option selected>secondary</option><option>tertiary</option><option>unknown</option></select></div>
+              <div class="form-group"><label for="default">Nợ tín dụng quá hạn</label><select id="default"><option selected>no</option><option>yes</option></select></div>
+              <div class="form-group"><label for="balance">Số dư tài khoản</label><input id="balance" type="number" value="1500" step="any" required></div>
+              <div class="form-group"><label for="housing">Vay mua nhà</label><select id="housing"><option>no</option><option selected>yes</option></select></div>
+              <div class="form-group"><label for="loan">Vay cá nhân</label><select id="loan"><option selected>no</option><option>yes</option></select></div>
+              <div class="form-group"><label for="contact">Phương thức liên hệ</label><select id="contact"><option selected>cellular</option><option>telephone</option><option>unknown</option></select></div>
+              <div class="form-group"><label for="day">Ngày liên hệ</label><input id="day" type="number" value="15" min="1" max="31" step="1" required></div>
+              <div class="form-group"><label for="month">Tháng liên hệ</label><select id="month"><option>jan</option><option>feb</option><option>mar</option><option>apr</option><option selected>may</option><option>jun</option><option>jul</option><option>aug</option><option>sep</option><option>oct</option><option>nov</option><option>dec</option></select></div>
+              <div class="form-group"><label for="campaign">Số lần liên hệ trong chiến dịch</label><input id="campaign" type="number" value="2" min="1" step="1" required></div>
+              <div class="form-group"><label for="pdays">Số ngày từ lần liên hệ trước</label><input id="pdays" type="number" value="-1" min="-1" step="1" required><small>-1 nghĩa là chưa có lần liên hệ trước được ghi nhận.</small></div>
+              <div class="form-group"><label for="previous">Số lần liên hệ trước</label><input id="previous" type="number" value="0" min="0" step="1" required></div>
+              <div class="form-group"><label for="poutcome">Kết quả chiến dịch trước</label><select id="poutcome"><option>failure</option><option>other</option><option>success</option><option selected>unknown</option></select></div>
             </div>
-
-            <p>
-                Ngưỡng quyết định được lựa chọn dựa trên
-                tập validation.
-            </p>
-
-        </article>
-
-
-        <article class="bento-card glass reveal delay-2">
-
-            <div class="card-icon cyan">
-                ↗
-            </div>
-
-            <span class="card-number">03</span>
-
-            <h3>PR-AUC</h3>
-
-            <div class="big-value">
-                {{ evaluation.pr_auc }}
-            </div>
-
-            <p>
-                Đánh giá khả năng phân biệt lớp dương
-                trên dữ liệu mất cân bằng.
-            </p>
-
-        </article>
-
-
-        <article class="bento-card wide glass reveal delay-1">
-
-            <div>
-                <div class="card-icon green">
-                    ✓
-                </div>
-
-                <span class="card-number">04</span>
-
-                <h4>Pipeline Machine Learning</h4>
-
-                <p>
-                    Data Preprocessing và Logistic Regression
-                    được đóng gói trong cùng một pipeline.
-                </p>
-            </div>
-
-            <div class="pipeline-visual">
-
-                <div>INPUT</div>
-                <span>→</span>
-                <div>PREPROCESS</div>
-                <span>→</span>
-                <div>MODEL</div>
-                <span>→</span>
-                <div>PREDICT</div>
-
-            </div>
-
-        </article>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     MODEL EVALUATION
-========================= -->
-
-<section class="section" id="evaluation">
-
-    <div class="section-heading reveal">
-
-        <div>
-            <span class="section-number">02 / MODEL</span>
-
-            <h2>
-                Hiệu suất
-                <span class="gradient-text">mô hình.</span>
-            </h2>
-        </div>
-
-        <p>
-            Các chỉ số được tính trên tập test độc lập.
-        </p>
-
-    </div>
-
-
-    <div class="evaluation-layout">
-
-        <div class="metrics-panel glass reveal">
-
-            <div class="panel-title">
-                <span>TEST PERFORMANCE</span>
-                <span class="panel-status">VERIFIED</span>
-            </div>
-
-            <div class="metrics-grid">
-
-                <div class="metric-card">
-                    <span>PR-AUC</span>
-                    <strong>{{ evaluation.pr_auc }}</strong>
-                    <small>Precision-Recall</small>
-                </div>
-
-                <div class="metric-card">
-                    <span>ACCURACY</span>
-                    <strong>{{ evaluation.accuracy }}</strong>
-                    <small>Overall accuracy</small>
-                </div>
-
-                <div class="metric-card">
-                    <span>PRECISION</span>
-                    <strong>{{ evaluation.precision }}</strong>
-                    <small>Positive precision</small>
-                </div>
-
-                <div class="metric-card">
-                    <span>RECALL</span>
-                    <strong>{{ evaluation.recall }}</strong>
-                    <small>Positive recall</small>
-                </div>
-
-                <div class="metric-card highlight">
-                    <span>F1 SCORE</span>
-                    <strong>{{ evaluation.f1 }}</strong>
-                    <small>Balanced metric</small>
-                </div>
-
-                <div class="metric-card">
-                    <span>THRESHOLD</span>
-                    <strong>{{ evaluation.threshold }}</strong>
-                    <small>Decision threshold</small>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="confusion-panel glass reveal delay-1">
-
-            <div class="panel-title">
-                <span>CONFUSION MATRIX</span>
-                <span>TEST</span>
-            </div>
-
-            <div class="matrix">
-
-                <div class="matrix-corner"></div>
-
-                <div class="matrix-axis">
-                    Actual 0
-                </div>
-
-                <div class="matrix-axis">
-                    Actual 1
-                </div>
-
-
-                <div class="matrix-axis">
-                    Predicted 0
-                </div>
-
-                <div class="matrix-cell tn">
-                    <small>TN</small>
-                    <strong>{{ evaluation.tn }}</strong>
-                </div>
-
-                <div class="matrix-cell fn">
-                    <small>FN</small>
-                    <strong>{{ evaluation.fn }}</strong>
-                </div>
-
-
-                <div class="matrix-axis">
-                    Predicted 1
-                </div>
-
-                <div class="matrix-cell fp">
-                    <small>FP</small>
-                    <strong>{{ evaluation.fp }}</strong>
-                </div>
-
-                <div class="matrix-cell tp">
-                    <small>TP</small>
-                    <strong>{{ evaluation.tp }}</strong>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     PREDICTION
-========================= -->
-
-<section class="prediction-section" id="prediction">
-
-    <div class="section-heading reveal">
-
-        <div>
-            <span class="section-number">03 / PREDICTION</span>
-
-            <h2>
-                Phân tích
-                <span class="gradient-text">một khách hàng.</span>
-            </h2>
-        </div>
-
-        <p>
-            Nhập thông tin khách hàng để hệ thống
-            tính toán xác suất đăng ký.
-        </p>
-
-    </div>
-
-
-    <div class="prediction-layout">
-
-        <!-- FORM -->
-
-        <section class="form-panel glass reveal">
-
-            <div class="panel-title">
-                <span>CUSTOMER PROFILE</span>
-                <span>15 FEATURES</span>
-            </div>
-
-
-            <form id="prediction-form">
-
-                <div class="form-grid">
-
-                    <div class="form-group">
-                        <label for="age">Tuổi</label>
-                        <input
-                            id="age"
-                            type="number"
-                            value="35"
-                            min="18"
-                            max="100"
-                            required
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="job">Nghề nghiệp</label>
-
-                        <select id="job">
-                            <option>admin.</option>
-                            <option>blue-collar</option>
-                            <option>entrepreneur</option>
-                            <option>housemaid</option>
-                            <option>management</option>
-                            <option>retired</option>
-                            <option>self-employed</option>
-                            <option>services</option>
-                            <option>student</option>
-                            <option selected>technician</option>
-                            <option>unemployed</option>
-                            <option>unknown</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="marital">Hôn nhân</label>
-
-                        <select id="marital">
-                            <option>divorced</option>
-                            <option selected>married</option>
-                            <option>single</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="education">Trình độ học vấn</label>
-
-                        <select id="education">
-                            <option>primary</option>
-                            <option selected>secondary</option>
-                            <option>tertiary</option>
-                            <option>unknown</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="default">Nợ tín dụng</label>
-
-                        <select id="default">
-                            <option selected>no</option>
-                            <option>yes</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="balance">Số dư tài khoản</label>
-
-                        <input
-                            id="balance"
-                            type="number"
-                            value="1500"
-                            required
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="housing">Vay mua nhà</label>
-
-                        <select id="housing">
-                            <option>no</option>
-                            <option selected>yes</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="loan">Khoản vay</label>
-
-                        <select id="loan">
-                            <option selected>no</option>
-                            <option>yes</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="contact">Phương thức liên hệ</label>
-
-                        <select id="contact">
-                            <option selected>cellular</option>
-                            <option>telephone</option>
-                            <option>unknown</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="day">Ngày liên hệ</label>
-
-                        <input
-                            id="day"
-                            type="number"
-                            value="15"
-                            min="1"
-                            max="31"
-                            required
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="month">Tháng</label>
-
-                        <select id="month">
-                            <option>jan</option>
-                            <option>feb</option>
-                            <option>mar</option>
-                            <option>apr</option>
-                            <option selected>may</option>
-                            <option>jun</option>
-                            <option>jul</option>
-                            <option>aug</option>
-                            <option>sep</option>
-                            <option>oct</option>
-                            <option>nov</option>
-                            <option>dec</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="campaign">Số lần liên hệ</label>
-
-                        <input
-                            id="campaign"
-                            type="number"
-                            value="2"
-                            min="1"
-                            required
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="pdays">Ngày từ lần liên hệ trước</label>
-
-                        <input
-                            id="pdays"
-                            type="number"
-                            value="-1"
-                            min="-1"
-                            required
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="previous">Số lần liên hệ trước</label>
-
-                        <input
-                            id="previous"
-                            type="number"
-                            value="0"
-                            min="0"
-                            required
-                        >
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="poutcome">Kết quả trước</label>
-
-                        <select id="poutcome">
-                            <option>failure</option>
-                            <option>other</option>
-                            <option>success</option>
-                            <option selected>unknown</option>
-                        </select>
-                    </div>
-
-                </div>
-
-
-                <button class="predict-button" type="submit">
-
-                    <span>Dự đoán khách hàng</span>
-
-                    <span class="button-arrow">
-                        →
-                    </span>
-
-                </button>
-
-            </form>
-
+            <button class="button button-primary predict-button" type="submit"><span>Dự đoán khách hàng</span><span aria-hidden="true">→</span></button>
+            <p class="form-disclaimer">Kết quả là ước tính từ mô hình, không đảm bảo hành vi thực tế của khách hàng.</p>
+          </form>
         </section>
+        <aside class="result-card" aria-live="polite"><div class="card-heading"><div><span class="section-kicker">KẾT QUẢ MÔ HÌNH</span><h3>Phân tích dự đoán</h3></div><span class="result-status"><b></b> SẴN SÀNG</span></div>
+          <div id="result"><div class="result-empty"><div class="result-empty-icon">✳</div><h4>Chưa có kết quả</h4><p>Nhập thông tin khách hàng và nhấn “Dự đoán khách hàng” để xem kết quả.</p></div></div>
+          <div class="result-footnote"><strong>Ngưỡng hiện tại: {{ threshold }}</strong><p>Nếu xác suất từ ngưỡng này trở lên, mô hình xếp khách hàng vào nhóm dự đoán “Có”.</p></div>
+        </aside>
+      </div>
+    </section>
+  </main>
 
-
-        <!-- RESULT -->
-
-        <section class="result-panel glass reveal delay-1">
-
-            <div class="panel-title">
-                <span>AI RESULT</span>
-
-                <span class="live-badge">
-                    <span></span>
-                    READY
-                </span>
-            </div>
-
-
-            <div id="result">
-
-                <div class="empty-result">
-
-                    <div class="empty-icon">
-                        ✦
-                    </div>
-
-                    <h3>Chưa có kết quả</h3>
-
-                    <p>
-                        Nhập thông tin khách hàng và chạy mô hình
-                        để xem dự đoán.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer id="footer">
-
-    <div class="footer-main">
-
-        <div>
-
-            <span class="section-number">
-                PROJECT 07
-            </span>
-
-            <h2>
-                Data → Model
-                <br>
-                <span class="gradient-text">
-                    → Decision.
-                </span>
-            </h2>
-
-            <p>
-                Hệ thống dự đoán khách hàng sử dụng
-                Logistic Regression và dữ liệu Bank Marketing.
-            </p>
-
-        </div>
-
-
-        <div class="footer-links">
-
-            <div>
-                <span>EXPLORE</span>
-
-                <a href="#overview">Tổng quan</a>
-                <a href="#evaluation">Đánh giá</a>
-                <a href="#prediction">Dự đoán</a>
-            </div>
-
-
-            <div>
-                <span>MODEL</span>
-
-                <a href="#evaluation">PR-AUC</a>
-                <a href="#evaluation">Precision</a>
-                <a href="#evaluation">Recall</a>
-                <a href="#evaluation">F1 Score</a>
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="footer-bottom">
-
-        <span>
-            © 2026 Project 07 — Machine Learning
-        </span>
-
-        <span>
-            Built with Python · Flask · Scikit-learn
-        </span>
-
-    </div>
-
-</footer>
-
-
-<script src="{{ url_for('static', filename='script.js') }}"></script>
-
+  <footer class="footer page-wrap"><a class="brand" href="#top"><span class="brand-mark">07</span><span>Bank<span class="brand-accent">Insight</span></span></a><p>Project 07 · Machine Learning · Flask · Scikit-learn</p><a href="#top">Về đầu trang ↑</a></footer>
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </body>
 </html>

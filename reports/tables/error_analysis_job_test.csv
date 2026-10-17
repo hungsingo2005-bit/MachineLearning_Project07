@@ -1,0 +1,13 @@
+job,samples,FP,FN,TP,TN
+management,1450,94,112,76,1168
+blue-collar,1448,14,82,23,1329
+technician,1174,48,81,50,995
+admin.,736,53,44,39,600
+services,616,14,29,19,554
+retired,343,57,32,54,200
+self-employed,247,10,22,14,201
+entrepreneur,230,7,18,2,203
+unemployed,192,23,16,16,137
+housemaid,173,5,12,7,149
+student,134,36,16,23,59
+unknown,39,4,4,2,29

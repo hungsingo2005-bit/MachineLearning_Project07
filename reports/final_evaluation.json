@@ -1,0 +1,64 @@
+{
+  "selected_model": "Logistic Regression",
+  "selected_threshold": 0.21,
+  "selection_rule": "Chọn F1 cao nhất trên Validation; nếu hòa, dùng PR-AUC Validation. Test chỉ đánh giá sau khi chốt lựa chọn.",
+  "validation_model_comparison": [
+    {
+      "model": "Logistic Regression",
+      "selected_threshold": 0.21,
+      "accuracy": 0.8804187555293423,
+      "precision": 0.4879089615931721,
+      "recall": 0.43198992443324935,
+      "f1": 0.458249832999332,
+      "pr_auc": 0.42011657888979104
+    },
+    {
+      "model": "Decision Tree (depth=5)",
+      "selected_threshold": 0.14,
+      "accuracy": 0.8860218224712474,
+      "precision": 0.5205479452054794,
+      "recall": 0.3350125944584383,
+      "f1": 0.4076628352490421,
+      "pr_auc": 0.3117274913247487
+    },
+    {
+      "model": "Baseline — all negative",
+      "selected_threshold": NaN,
+      "accuracy": 0.8829253907401946,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "pr_auc": NaN
+    },
+    {
+      "model": "Baseline — random contact",
+      "selected_threshold": NaN,
+      "accuracy": 0.8061043939840755,
+      "precision": 0.12944523470839261,
+      "recall": 0.11460957178841309,
+      "f1": 0.12157648630594522,
+      "pr_auc": NaN
+    }
+  ],
+  "test_metrics": {
+    "accuracy": 0.8771748746682395,
+    "precision": 0.47101449275362317,
+    "recall": 0.4098360655737705,
+    "f1": 0.4383007417397168,
+    "pr_auc": 0.4189186827459189
+  },
+  "test_confusion_matrix": {
+    "TN": 5624,
+    "FP": 365,
+    "FN": 468,
+    "TP": 325
+  },
+  "seed": 42,
+  "dataset_path": "/home/quan/MACHINE_LEARNING/BAITAPLON/MachineLearning_Project07/data/bank-full.csv",
+  "duration_removed": true,
+  "split_rows": {
+    "train": 31647,
+    "validation": 6782,
+    "test": 6782
+  }
+}

@@ -63,7 +63,7 @@ for col in df.select_dtypes(include="str"):
 
 
 # ==================================================
-# NUMERICAL STATISTICS
+# NUMERICAL STATISTICS  
 # ==================================================
 
 print("\nNumerical statistics:")

@@ -1,0 +1,32 @@
+{
+  "dataset_path": "/home/quan/MACHINE_LEARNING/BAITAPLON/MachineLearning_Project07/data/bank-full.csv",
+  "total_rows": 45211,
+  "total_features": 15,
+  "duration_removed": true,
+  "random_state": 42,
+  "train_rows": 31647,
+  "validation_rows": 6782,
+  "test_rows": 6782,
+  "train_positive_rate": 0.11697791259835055,
+  "validation_positive_rate": 0.11707460925980537,
+  "test_positive_rate": 0.11692716012975524,
+  "missing_values": {
+    "age": 0,
+    "job": 0,
+    "marital": 0,
+    "education": 0,
+    "default": 0,
+    "balance": 0,
+    "housing": 0,
+    "loan": 0,
+    "contact": 0,
+    "day": 0,
+    "month": 0,
+    "campaign": 0,
+    "pdays": 0,
+    "previous": 0,
+    "poutcome": 0,
+    "y": 0
+  },
+  "duplicate_rows": 16
+}
